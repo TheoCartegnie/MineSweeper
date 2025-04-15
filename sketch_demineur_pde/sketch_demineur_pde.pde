@@ -1,5 +1,5 @@
 int [][] grid;
-int MineNumber = 40;
+int MineNumber = 400;
 int GridSize = 40;
 int CaseSize = 20;
 color Unclicked = color (255,255,255);
@@ -40,11 +40,12 @@ void mouseClicked()
 }
 
 
-void DrawNumber(int X, int Y)
+void DrawNumber(String Number,int X, int Y)
 {
       println("Bien joué");
-      textSize(CaseSize/4);
-      text("10",(X * CaseSize) + CaseSize / 2,(Y * CaseSize) + CaseSize / 2);
+      textSize(CaseSize);
+      fill(120,255,20);
+      text(Number,(X * CaseSize) + CaseSize / 2,(Y * CaseSize) + CaseSize / 2);
 }
 
 void DrawMine(int X, int Y)
@@ -67,7 +68,7 @@ int GetMouseAxisOnGrid(int Axis)
 
 int GetCaseType(int x, int y)
 {
-      PVector Position = new PVector(GetMouseAxisOnGrid(mouseX), GetMouseAxisOnGrid(mouseY));
+     PVector Position = new PVector(GetMouseAxisOnGrid(mouseX), GetMouseAxisOnGrid(mouseY));
      return grid[(int)Position.x][(int)Position.y];
  
 }
@@ -91,7 +92,7 @@ void CheckAdjacentGrid(int X, int Y)
   int CheckedI = 0;
   int CheckedJ = 0;
   boolean NoMine = true;
-  
+  int MineNumber = 0;
     for(int i = X - 1; i <= X + 1; i++)
     {
       for(int j = Y - 1; j <= Y + 1; j++)
@@ -104,18 +105,25 @@ void CheckAdjacentGrid(int X, int Y)
         {
             DrawMine(CheckedI,CheckedJ);
             grid[CheckedI][CheckedJ] = 2;
-            CheckAdjacentGrid(CheckedI,CheckedJ);
+            MineNumber++;
+            NoMine = false;
         }
         
         else if(grid[CheckedI][CheckedJ] == 0)
         {
-          DrawCase(CheckedI ,CheckedJ ,Verified);
-          //NoMine = false;
+            grid[CheckedI][CheckedJ] = 2;
+            DrawCase(CheckedI ,CheckedJ ,Verified);
         }
         
         
       }
     }
+    
+    if(!NoMine)
+    {
+      DrawNumber(str(MineNumber),X,Y);
+    }
+    
 }
 
 void InitGrid()
